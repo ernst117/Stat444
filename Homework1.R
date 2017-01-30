@@ -3,10 +3,19 @@
 
 ##4.1 Before you read the results of the poll, you had not thought much about the chances that candidate A would win (or a priori, you had no information about the probability of success for candidate A). What is the 95% Highest Posterior Density set (HPD set) on the probability that A will win after you have read the results of the poll?
 
+source("BernBeta.R")
+priorShape = c(1,1)
+dataVec = c(rep(1, 50), rep(0,50))
+credMass = 0.95
+postShape = BernBeta(priorShape, dataVec, credMass)
 
-
+priorShape = c(100,100)
+dataVec = c(rep(1, 58), rep(0,42))
+credMass = 0.95
+postShape = BernBeta(priorShape, dataVec, credMass)
 
 ##4.2 Using simulation, compute a 95% credible set for the probability that A will win. How do the two intervals compare?
+
 
 
 
