@@ -1,4 +1,4 @@
-Inverse CDF Method to Generate Random Variable cc @mathsorosThe following R code is used to generate certain number of random variables under N(0,1) distribution. The main function is “sampler” and it take an integer as input.
+Inverse CDF Method to Generate Random Variable cc @mathsorosThe following R code is used to generate certain number of random variables under N(0,1) distribution. The main function is ?sampler? and it take an integer as input.
 
 ## Main function ##
 sampler <- function(n){

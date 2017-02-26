@@ -7,7 +7,43 @@ newcomb_data = c(28, 26, 33, 24, 34, -44, 27, 16, 40, -2,
                  36, 23, 27, 27, 28, 27, 31, 27, 26, 33,
                  26, 32, 32, 24, 39, 28, 24, 25, 32, 25,
                  29, 27, 28, 29, 16, 23)
-newcomb_data
+
+y = newcomb_data
+n = length(y)
+sd(y)^2
+
+S=sum((y-mean(y))^2)
+n=length(y)
+sigma2=S/rchisq(1000, n - 1)
+par(mfrow=c(2,1))
+hist(sigma2)
+
+outcome = favorite - underdog
+d = outcome - spread
+n = length(d)
+v = 1
+ssqr = v / n
+ssqr
+# Use first a non-informative distribution for sigma^2.
+precision = rchisq(1000, n) / v
+
+sigma = 1 / sqrt(precision)
+hist(sigma, main="")
+
+# Now use an inverted chi^2 prior with sigma^2_0 = 10 and
+# nu_0 = 300.
+
+nu.zero = 26
+sigmasq.zero = 11
+nu.n = nu.zero + n
+sigmasq.n = (n*v + nu.zero*sigmasq.zero) / nu.n
+prec.inf = rchisq(1000, nu.n) / sigmasq.n
+sigma.inf = 1 / sqrt(prec.inf)
+hist(sigma.inf, main="")
+summary(sigma)
+summary(sigma.inf)
+quantile(sigma, probs=c(0.025, 0.5, 0.975))
+quantile(sigma.inf, probs=c(0.025, 0.5, 0.975))
 
 #Problem 2: Albert (2011) describes a dataset that includes marathon completion times (in minutes) for men aged 20 to 29 years who participate in the New York marathon. The dataset has times for 20 runners and you can access the data from R by issuing the commands:
 
@@ -21,8 +57,22 @@ attach(marathontimes)
 
 #Problem 3: Revisit the football scores example, where now we consider non-conjugate prior distributions for μ, σ2 (see Notes, pp 27-33). We wish to obtain the posterior distributions for the two parameters μ,σ2, and we do so under two different priors.
 
-#3.a First choose a standard non-informative prior for μ, σ2, with p(μ, σ2) ∝ σ−2. Approxi- mate the posterior distribution of μ, σ2 by first drawing values of σ2 from its margina posterior distribution p(σ2|y) using the inverse CDF method (see Notes, p. 33) and then drawing values of μ from its conditional posterior distribution p(μ|σ2,y). Draw histograms of the posterior distributions of μ and of σ2.
+#3.a First choose a standard non-informative prior for μ, σ2, with p(μ, σ2) ∝ σ−2. Approximate the posterior distribution of μ, σ2 by first drawing values of σ2 from its marginal posterior distribution p(σ2|y) using the inverse CDF method (see Notes, p. 33) and then drawing values of μ from its conditional posterior distribution p(μ|σ2,y). Draw histograms of the posterior distributions of μ and of σ2.
+
+outcome = favorite - underdog
+
+S=sum((outcome-mean(outcome))^2)
+n=length(outcome)
+sigma2=S/rchisq(1000, n - 1)
+par(mfrow=c(2,1))
+hist(sigma2)
+
+mu = rnorm(1000, mean = mean(outcome), sd = sqrt(sigma2)/sqrt(n))
+hist(mu)
 
 #3.b Consider now a non-conjugate prior for μ, σ2 of the form 
 #p(μ, σ2) = p(μ)p(σ2) = N(μ|μ0, τ02)Inv − χ2(ν0, σ02)
 #for some reasonable choices of μ0,τ02,ν0,σ02. Implement the inverse CDF method to draw values from the marginal posterior distribution of σ2, and given those draws, generate values of μ from its conditional posterior distribution, as in part [3.a].
+
+
+

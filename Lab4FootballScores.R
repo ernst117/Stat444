@@ -8,6 +8,7 @@ library(LearnBayes)
 data(footballscores)
 attach(footballscores)
 
+sd(d)
 #  How many observations?  How many variables?
 dim(footballscores)
 footballscores[1:10,]
@@ -18,9 +19,10 @@ d = outcome - spread
 n = length(d)
 v = sum(d^2)
 ssqr = v / n
-
+ssqr
 # Use first a non-informative distribution for sigma^2.
 precision = rchisq(1000, n) / v
+
 sigma = 1 / sqrt(precision)
 hist(sigma, main="")
 
@@ -55,7 +57,7 @@ sigma.post = function(nu.zero, sigmasq.zero)
     return(post)
   }
 
-nu.zero = 500; sigmasq.zero = 10
+nu.zero = 26; sigmasq.zero = 115
 sigma.post(nu.zero, sigmasq.zero)
 
 

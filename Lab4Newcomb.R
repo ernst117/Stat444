@@ -5,13 +5,14 @@
 #  with zero degrees of freedom (for sigma^2).
 
 y = scan("newcomb.txt")
+y = newcomb_data
 
 #  Compute the sum of squares and n and then draw 1000 values of
 #  sigma^2 from the scaled - inverted chi^2 distribution with n-1
 #  degrees of freedom. Recall that we have to first draw the chi^2
 #  random variable and then invert it to get sigma^2, because there
 #  is no routine in R that will draw values directly from an inv-X^2.
- 
+
 S=sum((y-mean(y))^2)
 n=length(y)
 sigma2=S/rchisq(1000, n - 1)
