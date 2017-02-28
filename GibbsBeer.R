@@ -9,7 +9,10 @@ names(beer) = c("brand","price","calories","alcohol","type","domestic")
   # type: 1=craft lager, 2=craft ale, 3=import lager,
   #    4=regular & ice beer, 5=light/no alcohol beer
   # domestic: 1=U.S., 2=import
-beer = beer[1:78,]  # remove non-alcoholic beers
+beer = beer[1:62,]  # remove non-alcoholic beers
+
+dim(beer)
+
 attach(beer)
 hist(alcohol)
 
@@ -62,14 +65,16 @@ sd(mu)
 
 mean(sigma2)
 
-#  NOW DO THE SAME ANALYSIS BUT USING JAGS
+#  NOW DO THE SAME ANALYSIS BUT USING JAGS, just another gibbs sampler
 #  We need to load the package rjags and write a file with the model.
 
+install.packages("rjags")
+install.packages("coda")
 library(rjags)
 library(coda)
 
 y = alcohol
-model = jags.model("BeerModel.txt", data=list("y"=y, "n"=n),
+model = jags.model("BeerModel.R", data=list("y"=y, "n"=n),
                    n.chains = 3)
 
 #  Draw samples from the model.  We get 1000 iterations from each of the 3 chains.
