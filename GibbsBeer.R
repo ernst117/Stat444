@@ -74,7 +74,7 @@ library(rjags)
 library(coda)
 
 y = alcohol
-model = jags.model("BeerModel.R", data=list("y"=y, "n"=n),
+model = jags.model("BeerModel.txt", data=list("y"=y, "n"=n),
                    n.chains = 3)
 
 #  Draw samples from the model.  We get 1000 iterations from each of the 3 chains.
