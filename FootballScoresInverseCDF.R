@@ -11,6 +11,7 @@ library(MCMCpack)
 data(footballscores)
 attach(footballscores)
 y = favorite - underdog - spread
+sd(y)^2
 
 y = marathontimes$time
 sd(marathontimes$time)^2
@@ -29,12 +30,14 @@ sig2 = seq(from=100, to=200, length=1000)
 #  We now evaluate p(sigma^2|y) for each value of sigma^2 i the vector
 #  sig2.  First we compute the values of the parameters nu_n, sigma^2_n, etc.
 
-nu0 = 100
+nu0 = 50
 n = length(y)
 nun = nu0 + 0.5*n
 
-kappa0 = 100
 sigma20 = 180
+sigma2n = sigma20 + 0.5*(n-1)*var(y) + 0.5*n*mean(y)*mean(y)/(n)
+
+kappa0 = 100
 sigma2n = sigma20 + 0.5*(n-1)*var(y) + 0.5*kappa0*n*mean(y)*mean(y)/(kappa0+n)
 
 #  The vector p will contain the 1000 evaluations of p(sigma^2|y), for each of
