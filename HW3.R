@@ -1,32 +1,50 @@
-#Problem 1: We wish to use rejection sampling to draw values from a mixture of normal distributions. Let x ~ f(x) = 1/2 N(3; 2) + 1/2 N(􀀀5; 1); for x 2 <. [Hint: Find c analytically or use the difference approach and find d.]
+#Problem 1:
 
 #1.a Plot f(x) for -10 <= x <= 10.
 
-#
+library(LearnBayes)
+
+x = seq(-10, 10, by=.01)
+fx = (0.5*dnorm(x, 3, 2)) + (0.5*dnorm(x,-5,1))
+
+plot(x, fx, type="l", lwd=3, col="black", main="Target Density", ylim=c(0,0.25))
+
+
+##1.b Use an instrumental distribution g1(x) that is uniform in (-10, 10) and find the appropriate constant c to implement a rejection sampler. Draw n = 1000 values from f(x) using g1(x) as the proposal distribution. Compute the acceptance rate.
+
+theta.star = runif(1000, -10, 10)
+u = runif(1000, -10, 10)
+pi = 3.14159
+
+keep = 0 ; reject = 0
+theta=rep(0, 1000)
+prob = rep(0, 1000)
+for(i in 1:length(theta.star)){
+  prob[i] = ((0.5*(1/(sqrt(2*pi)*2))*exp((-1/(2*2^2))(theta.star[i]-3)^2))+(0.5*(1/(sqrt(2*pi)*1))*exp((-1/(2*1^2))(theta.star[i]-(-5))^2)))/0.2
+  if(u[i] <= prob[i]){
+    theta[keep] = theta.star[i]
+    keep = keep + 1
+  }
+  else{ 
+    reject = reject + 1
+  }
+}
+
+prob.accept = keep / length(theta.star)
+prob.accept
+
+##1.c Now use an instrumental distribution g2(x) that is normal with mean 0 and variance 16. Find the appropriate constant c and implement a rejection sampler to draw n = 1000 values from f(x). Is this instrumental distribution more or less efficient than the one you used in part b?
 
 
 
-#1.b Use an instrumental distribution g1(x) that is uniform in (-10, 10) and find the appropriate constant c to implement a rejection sampler. Draw n = 1000 values from f(x) using g1(x) as the proposal distribution. Compute the acceptance rate.
+#Problem 2:
 
-#1.c Now use an instrumental distribution g2(x) that is normal with mean 0 and variance 16. Find the appropriate constant c and implement a rejection sampler to draw n = 1000 values from f(x). Is this instrumental distribution more or less efficient than the one you used in part b?
+#2.a
 
-#Problem 2: A drug company wants to know which of three possible drug formulations is most effective against migraine headaches. Ten volunteers were randomly allocated to each of the three drugs(A, B or C) and were asked to report the level of pain during their next migraine episode, an hour after taking the drug. Participantas were instructed to use a scale from 0 (no pain) to 10 (worst pain ever) to rate their pain. Data are stored in the le entitled Pain.csv in the Homework 3 folder. Assume that a simple linear model:
+pain = read.csv(file.choose())
+boxplot(Pain~Drug,data=pain, main="Pain Data", xlab="Drug", ylab="Pain")
 
-#yij = mu + betai + eij,
-
-# is appropriate, where yij is the response of the jth participant allocated to the ith drug, mu is an overall mean, betai is the effect of the ith drug, and eij is a random residual. Here, j = 1,...,10, and i = 1, 2, 3. We let thetai = mu + betai and assume that
-
-#yij ~ iidN(thetai, sigma2)
-
-#to complete the model, we let:
-
-#thetai ~ N(mu, tau2)
-#sigma2 ~ Inv-Chi2(nu0, sigma0)
-#mu, tau2 is directly proportional to tau^-2
-
-#and choose values nu0 = 5, sigma0 = 9
-
-#2.a Explore the data by drawing boxplots of pain scores for each drug. From the plots, do you expect to find that drugs differ in terms of effectiveness?
+#Answer: While the data ranges do overlap slightly, Drug A has the lowest mean headache pain and looks to significantly differ in effectiveness from drugs B and C
 
 #2.b Write down the joint posterior distribution of model parameters (theta1; theta2; theta3; sigma2; my; tau2).
 
